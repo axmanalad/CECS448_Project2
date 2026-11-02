@@ -3,6 +3,7 @@ import { RotateCcw } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAudio } from "../context/AudioContext.tsx";
 import DashboardSection from '../components/dashboard/DashboardSection';
+import {getThemeStyles} from "../utils/themes.ts";
 
 const Home = () => {
   const { theme } = useTheme();
@@ -43,17 +44,7 @@ const Home = () => {
     { id: 11, title: "Late Night Jazz", desc: "Mellow acoustic keys and soft brass backdrops" }
   ];
 
-  const themeStyles = {
-    primaryText: theme === 'dark' ? 'text-white' : 'text-gray-900',
-    subText: theme === 'dark' ? 'text-[#a7a7a7]' : 'text-gray-500',
-    cardBg: theme === 'dark' ? 'bg-[#181818] hover:bg-[#282828]' : 'bg-gray-100 hover:bg-gray-200/70',
-    borderStyle: theme === 'dark' ? 'border-transparent' : 'border border-gray-200/50',
-    playBtnAccent: theme === 'dark' ? 'bg-[#b026ff]' : 'bg-[#5d00b3]',
-    playIconColor: theme === 'dark' ? 'text-black' : 'text-white',
-    playIconFill: theme === 'dark' ? 'black' : 'white',
-    eyeIconColor: theme === 'dark' ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black',
-    borderHeader: theme === 'dark' ? 'border-white/5' : 'border-gray-200'
-  };
+  const themeStyles = getThemeStyles(theme);
 
   const hasHiddenSections = Object.values(visibleSections).some((status) => !status);
 

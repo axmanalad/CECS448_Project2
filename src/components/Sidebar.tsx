@@ -3,9 +3,11 @@ import { Home, Search, Library, Plus, ChevronDown, ChevronLeft, ChevronRight, Us
 import PlaylistCover from './PlaylistCover';
 import * as React from "react";
 import { useTheme } from '../context/ThemeContext';
+import {useNavigate} from "react-router-dom";
 
 const Sidebar = () => {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [sidebarWidth, setSidebarWidth] = useState(260);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
@@ -90,7 +92,10 @@ const Sidebar = () => {
               <ChevronRight size={24} className="shrink-0" />
             )}
           </button>
-          <button className={`flex items-center transition rounded-md duration-200 ${theme === 'dark' ? 'text-white' : 'text-black'} ${isCollapsed ? 'justify-center w-12 h-12 p-0 ' + hoverBgClass : 'w-full gap-5 px-3 py-2.5 ' + hoverBgClass}`}>
+          <button
+            onClick={() => navigate('/')}
+            className={`flex items-center transition rounded-md duration-200 ${theme === 'dark' ? 'text-white' : 'text-black'} ${isCollapsed ? 'justify-center w-12 h-12 p-0 ' + hoverBgClass : 'w-full gap-5 px-3 py-2.5 ' + hoverBgClass}`}
+          >
             <Home size={24} className="shrink-0" />
             {!isCollapsed && <span>Home</span>}
           </button>
