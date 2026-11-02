@@ -48,7 +48,7 @@ const DashboardSection = ({
           </h2>
           <button
             onClick={onToggle}
-            className={`p-1 rounded-md hover:bg-white/5 transition opacity-0 group-hover/header:opacity-100 ${eyeIconColor}`}
+            className={`p-1 rounded-md hover:bg-white/5 transition ${eyeIconColor}`}
             title={isVisible ? "Hide this section" : "Show this section"}
           >
             {isVisible ? <Eye size={18} /> : <EyeOff size={18} className="text-red-500" />}

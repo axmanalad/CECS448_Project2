@@ -1,29 +1,10 @@
-import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Heart, Play, Plus, Shuffle } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { useAudio } from "../context/AudioContext.tsx";
 import PlaylistCover from '../components/PlaylistCover.tsx';
-
-class Song {
-    artist: string;
-    title: string;
-
-    constructor(artist: string, title: string) {
-        this.artist = artist;
-        this.title = title;
-    }
-};
-
-function generateSongs(artist: string, numSongs: number): Array<Song> {
-    let songs: Array<Song> = [];
-
-    for (let i = 0; i < numSongs; ++i) {
-        songs.push(new Song(artist, `SomeSong ${i + 1}`));
-    }
-
-    return songs;
-}
+import React from "react";
+import {getThemeStyles} from "../utils/themes.ts";
+import {useAudio} from "../context/AudioContext.tsx";
 
 function convertSecondsToDurationText(seconds: number): string {
     let minutes = Math.floor(seconds / 60);
@@ -82,9 +63,10 @@ function SongRow({ songIndex, artist, name, durationSeconds, playIconFill, playI
 }
 
 const Playlist = () => {
-    const navigate = useNavigate();
+    useNavigate();
     const { playlistId } = useParams();
     const playlistIdSafe = playlistId !== undefined ? +playlistId - 1 : 0;
+    const { playTrack } = useAudio();
 
     // Data layers
     const albums = [
@@ -104,17 +86,16 @@ const Playlist = () => {
     const album = albums[playlistIdSafe];
 
     const { theme } = useTheme();
-    const themeStyles = {
-        primaryText: theme === 'dark' ? 'text-white' : 'text-gray-900',
-        subText: theme === 'dark' ? 'text-[#a7a7a7]' : 'text-gray-500',
-        cardBg: theme === 'dark' ? 'bg-[#181818] hover:bg-[#282828]' : 'bg-gray-100 hover:bg-gray-200/70',
-        borderStyle: theme === 'dark' ? 'border-transparent' : 'border border-gray-200/50',
-        playBtnAccent: theme === 'dark' ? 'bg-[#b026ff]' : 'bg-[#5d00b3]',
-        playIconColor: theme === 'dark' ? 'text-black' : 'text-white',
-        playIconFill: theme === 'dark' ? 'black' : 'white',
-        eyeIconColor: theme === 'dark' ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black',
-        borderHeader: theme === 'dark' ? 'border-white/5' : 'border-gray-200'
-    };
+    const themeStyles = getThemeStyles(theme);
+
+    function doPlayPlaylist() {
+        playTrack({
+            id: album.id,
+            title: album.title,
+            artist: 'Various Artists',
+            variant: album.id,
+        });
+    }
 
     return (
         <div className="space-y-10 select-none pb-12">
@@ -138,7 +119,8 @@ const Playlist = () => {
 
                 <div className="flex space-x-2">
                     <button
-                        className={`w-12 h-12 rounded-full flex items-center justify-center group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-2xl hover:scale-105 active:scale-95 ${themeStyles.playBtnAccent} ${themeStyles.playIconColor}`}
+                      onClick={doPlayPlaylist}
+                      className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-2xl hover:scale-105 active:scale-95 ${themeStyles.playBtnAccent} ${themeStyles.playIconColor}`}
                     >
                         <Play size={22} fill={themeStyles.playIconFill} onClick={() => { }} />
                     </button>

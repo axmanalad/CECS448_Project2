@@ -55,11 +55,16 @@ const DashboardCard = ({
       <div className="relative aspect-square w-full shadow-lg">
         <PlaylistCover title={album.title} variant={album.id} size="w-full h-full rounded-md" />
         <button
+          onClick={(e) => {
+            e.stopPropagation();
+            doPlayTrack();
+          }}
           className={`absolute right-3 bottom-3 w-12 h-12 rounded-full flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-2xl hover:scale-105 active:scale-95 ${playBtnAccent} ${playIconColor}`}
         >
-          <Play size={22} fill={playIconFill} className="translate-x-[1.5px]" onClick={doPlayTrack} />
+          <Play size={22} fill={playIconFill} className="translate-x-[1.5px]" />
         </button>
       </div>
+
       <div className="flex flex-col min-w-0">
         <span className={`text-sm font-bold truncate mb-1 ${primaryText}`}>{album.title}</span>
         <p className={`text-xs line-clamp-2 leading-relaxed font-medium ${subText}`}>{album.desc}</p>
